@@ -1,0 +1,158 @@
+ <!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      body {
+        background-color: black;
+        background-image: url("https://images.pexels.com/photos/162389/lost-places-old-decay-ruin-162389.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        color: white;
+        font-size: 24px;
+        font-family: 'Courier New', monospace;
+        text-align: center;
+        height: 100vh
+      }
+
+      h1 {
+        font-size: 60px;
+        font-weight: bold;
+        text-shadow: 2px 2px 4px #000000;
+        margin-top: 50px;
+      }
+
+      input {
+        font-size: 20px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 2px solid white;
+        background-color: rgb(255, 255, 255);
+        color: rgb(0, 0, 0);
+        width: 80%;
+        max-width: 400px;
+        margin: 20px auto;
+      }
+
+      #clues {
+        font-size: 18px; 
+        margin-top: 20px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        border: 2px snow
+    }
+
+    #volume-button {
+        font-size: 20px;
+        padding: 5px 10px;
+        border-radius: 5px;
+        border: 2px solid white;
+        background-color: rgb(255, 255, 255);
+        color: rgb(0, 0, 0);
+        position: fixed;
+        top: 10px;
+        right: 10px;
+    }
+      
+
+      @media only screen and (max-width: 700px) {
+        h1 {
+          font-size: 16vw;
+          margin-top: 5vw;
+        }}
+
+
+    </style> 
+    <body>
+        <h1>WELCOME TO THE DARK ROOM </h1>
+        <p id = "hover-speech">You find yourself in a dark room. What do you do?</p>
+        <button id="volume-button" onclick="toggleMute()">Mute/Unmute</button>
+    </body>
+    <script>
+
+const speech = new SpeechSynthesisUtterance();
+    speech.lang = 'en-US';
+    speech.text = document.getElementById('hover-speech').textContent;
+    
+    document.getElementById('on-Hover').addEventListener('mouseover', () => {
+      window.speechSynthesis.speak(speech);
+    });
+
+    function toggleMute() {
+  var audio = document.getElementById("audio");
+  if (audio.muted) {
+    audio.muted = false;
+    document.getElementById("volume-button").innerHTML = "Mute";
+  } else {
+    audio.muted = true;
+    document.getElementById("volume-button").innerHTML = "Unmute";
+  }
+}
+       
+function look() {
+        document.getElementById("output").innerHTML = "You see a door and a window. The door is locked.";
+        document.getElementById("input").value = "";
+        var message = new SpeechSynthesisUtterance("You see a door and a window. The door is locked.");
+  message.voice = speechSynthesis.getVoices()[8]; 
+  speechSynthesis.speak(message);
+}
+
+      function openDoor() {
+        document.getElementById("output").innerHTML = "The door is locked. You can't open it.";
+        document.getElementById("input").value = "";
+        var message = new SpeechSynthesisUtterance("The door is locked. Maybe you could try to 'break window'.");
+        message.voice = speechSynthesis.getVoices()[8]; 
+        speechSynthesis.speak(message);
+      }
+
+      function breakWindow() {
+  document.getElementById("output").style.fontSize = "36px";
+  document.getElementById("output").innerHTML = "YOU HAVE BROKEN THE WINDOW AND ESCAPED!";
+  document.getElementById("clues").style.display = "none";
+  document.getElementById("input").style.display = "none";
+  var message = new SpeechSynthesisUtterance("You broke the window and escaped! Congrats!");
+        message.voice = speechSynthesis.getVoices()[8];
+        speechSynthesis.speak(message);
+      }
+
+function playAudio() {
+    var audio = document.getElementById("audio");
+    audio.play();
+
+}
+
+
+    </script>
+  </head>
+  <body onload="startGame()">
+    
+    <p id="output"></p>
+    <input type="text" id="input" onkeydown="if (event.keyCode == 13) { evaluateInput(); }" placeholder="Type something...">
+    <div id="clues">Clues: try looking, try opening door, try breaking window</div>
+    <audio id="audio" src="wrongplace.mp3" loop="true" autoplay></audio>
+    <script>
+      function evaluateInput() {
+        var input = document.getElementById("input").value.toLowerCase();
+        if (input == "look") {
+          look();
+        } else if (input == "open door") {
+          openDoor();
+        } else if (input == "break window") {
+          breakWindow();
+        } else {
+          document.getElementById("output").innerHTML = "I don't understand. Try again.";
+          document.getElementById("input").value = "";
+        }
+      }
+
+      var title = document.getElementById("title");
+      var wrongplace = document.getElementBYId("wrongplace.mp3");
+
+      title.addEventListener("onClick",function() {
+        wrongplace.play();
+      });
+      
+    </script>
+    </body>
+</html>
